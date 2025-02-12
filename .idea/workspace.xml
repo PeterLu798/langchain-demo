@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="248b2cb1-b11d-4fcd-aa37-5958794bc09f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/langchain-demo.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/READEME.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/agt/Action.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/agt/ReAct.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/agt/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/data/2023年8月-9月销售记录.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/data/供应商名录.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/data/供应商资格要求.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/demo/ReActDemo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/demo/SelfAskWithSearchDemo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/demo/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/env/key.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/examples.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/models/Factory.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/models/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/prompts/main/main.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/prompts/tools/excel_analyser.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/tools/EmailTool.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/tools/ExcelTool.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/tools/FileQATool.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/tools/FileTool.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/tools/FinishTool.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/tools/PythonTool.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/tools/Tools.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/tools/WriterTool.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/tools/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/utils/CallbackHandlers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/utils/PrintUtils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agent/utils/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dataconnection/Demo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dataconnection/VectorstoreDemo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dataconnection/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dataconnection/llama2.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/funcall/FunctionCalling.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/funcall/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/history/FilterMessage.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/history/RunnableWithHistory.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/history/TrimMessage.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/history/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/agent.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/react.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/index.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/io/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/io/input/ChatPromptTemplate.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/io/input/MessagesPlaceholder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/io/input/PromptFromFile.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/io/input/PromptTemplate.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/io/input/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/io/input/example_prompt_template.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/io/output/Json.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/io/output/OutputFixingParserDemo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/io/output/OutputParser.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/io/output/Pydantic.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/io/output/PydanticOutputParserDemo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/io/output/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lanagservice/Client.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lanagservice/Server.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lanagservice/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lcel/ConfigurableDemo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lcel/ELEL.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lcel/StreamDemo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lcel/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/Ollama.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/OpenAI.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/Session.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/ollama_functions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rag/Index.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rag/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rag/llama2.pdf" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2sjoo4tUSQuHNHq4ArRQHANk7FX" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.ChatPromptTemplate.executor": "Run",
+    "Python.Client.executor": "Run",
+    "Python.Demo.executor": "Run",
+    "Python.ELEL.executor": "Run",
+    "Python.Factory.executor": "Run",
+    "Python.FileQATool.executor": "Run",
+    "Python.FilterMessage.executor": "Run",
+    "Python.FunctionCalling.executor": "Run",
+    "Python.Json.executor": "Run",
+    "Python.MessagesPlaceholder.executor": "Run",
+    "Python.Ollama.executor": "Run",
+    "Python.OutputFixingParserDemo.executor": "Run",
+    "Python.OutputParser.executor": "Run",
+    "Python.PrintUtils.executor": "Run",
+    "Python.PromptFromFile.executor": "Run",
+    "Python.PromptTemplate.executor": "Run",
+    "Python.Pydantic.executor": "Run",
+    "Python.PydanticOutputParserDemo.executor": "Run",
+    "Python.PythonTool.executor": "Run",
+    "Python.ReActDemo.executor": "Run",
+    "Python.SelfAskWithSearchDemo.executor": "Run",
+    "Python.Server.executor": "Run",
+    "Python.Tools.executor": "Run",
+    "Python.TrimMessage.executor": "Run",
+    "Python.VectorstoreDemo.executor": "Run",
+    "Python.WriterTool.executor": "Run",
+    "Python.__init__.executor": "Run",
+    "Python.index.executor": "Run",
+    "Python.main (1).executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "D:/git/python/langchain-demo/agent",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\git\python\langchain-demo\agent" />
+      <recent name="D:\git\python\langchain-demo\agent\tools" />
+      <recent name="D:\git\python\langchain-demo\agent\prompts\tools" />
+      <recent name="D:\git\python\langchain-demo" />
+      <recent name="D:\git\python\langchain-demo\agent\models" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\git\python\langchain-demo\agent\env" />
+      <recent name="D:\git\python\langchain-demo\agent\demo" />
+      <recent name="D:\git\python\langchain-demo\img" />
+      <recent name="D:\git\python\langchain-demo\io\input" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.main (1)">
+    <configuration name="Json" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="langchain-demo" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/io/output" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/io/output/Json.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="PydanticOutputParserDemo" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="langchain-demo" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/io/output" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/io/output/PydanticOutputParserDemo.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Tools" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="langchain-demo" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/agent/tools" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/agent/tools/Tools.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="langchain-demo" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/agent/tools" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/agent/tools/__init__.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="langchain-demo" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/agent" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/agent/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="langchain-demo" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main (1)" />
+        <item itemvalue="Python.PydanticOutputParserDemo" />
+        <item itemvalue="Python.Json" />
+        <item itemvalue="Python.__init__" />
+        <item itemvalue="Python.Tools" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-975db3bf15a3-31b6be0877a2-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.18034.82" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="248b2cb1-b11d-4fcd-aa37-5958794bc09f" name="Changes" comment="" />
+      <created>1738978517081</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1738978517081</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>8</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
