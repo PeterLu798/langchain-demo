@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="248b2cb1-b11d-4fcd-aa37-5958794bc09f" name="Changes" comment="" />
+    <list default="true" id="248b2cb1-b11d-4fcd-aa37-5958794bc09f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/img/vector.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/vector_distance.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workflow/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agent/env/key.env" beforeDir="false" afterPath="$PROJECT_DIR$/agent/env/key.env" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -64,9 +71,9 @@
     "Python.index.executor": "Run",
     "Python.main (1).executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "D:/git/python/langchain-demo/agent",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
   <component name="RecentsManager">
