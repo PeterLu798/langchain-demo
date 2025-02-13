@@ -1,11 +1,11 @@
 # 向量
 ## 什么是向量  
 向量是一种有大小和方向的数学对象。它可以表示为从一个点到另一个点的有向线段。例如，二维空间中的向量可以表示为(x, y)，表示从原点(0, 0)到点(x, y)的有向线段。      
-<img src=img/vector.png width=200 />    
+<img src=img/vector.png width=300 />    
 **以此类推，我可以用一组坐标(x0,x1,...,xn-1)表示一个N维空间中的向量，N叫做向量的维度。**
 
 ## 向量间的相似度计算 
-<img src=img/vector_distance.png width=200 />     
+<img src=img/vector_distance.png width=300 />     
 
 ### 余弦距离（Cosine Distance）
 如上图所示，余弦距离为两个向量之间的夹角度数的**余弦值**。  
