@@ -8,7 +8,7 @@ from langchain_ollama import OllamaLLM
 self_ask_prompt = hub.pull("hwchase17/self-ask-with-search")
 # print(self_ask_prompt.template)
 
-search = SerpAPIWrapper(serpapi_api_key="963f97d9efa23721d8359f4d11b64fc19ecb873d41066e6ee9e80dffcb71dd57")
+search = SerpAPIWrapper(serpapi_api_key="XXX")
 
 tools = [
     Tool(

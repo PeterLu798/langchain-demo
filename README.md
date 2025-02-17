@@ -8,10 +8,6 @@
       - [原理](#%E5%8E%9F%E7%90%86)
       - [优缺点](#%E4%BC%98%E7%BC%BA%E7%82%B9)
       - [适用场景](#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF)
-    + [词袋模型（Bag of Words Model）](#%E8%AF%8D%E8%A2%8B%E6%A8%A1%E5%9E%8Bbag-of-words-model)
-      - [原理](#%E5%8E%9F%E7%90%86-1)
-      - [优缺点](#%E4%BC%98%E7%BC%BA%E7%82%B9-1)
-      - [适用场景](#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-1)
   * [向量数据库](#%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93)
     + [安装](#%E5%AE%89%E8%A3%85)
     + [架构特点](#%E6%9E%B6%E6%9E%84%E7%89%B9%E7%82%B9)
@@ -35,19 +31,29 @@
         * [基于ANN算法搜索](#%E5%9F%BA%E4%BA%8Eann%E7%AE%97%E6%B3%95%E6%90%9C%E7%B4%A2)
         * [过滤搜索](#%E8%BF%87%E6%BB%A4%E6%90%9C%E7%B4%A2)
         * [范围搜索](#%E8%8C%83%E5%9B%B4%E6%90%9C%E7%B4%A2)
-        * [分组搜索](#%E5%88%86%E7%BB%84%E6%90%9C%E7%B4%A2)
         * [混合搜索](#%E6%B7%B7%E5%90%88%E6%90%9C%E7%B4%A2)
         * [查询](#%E6%9F%A5%E8%AF%A2)
         * [过滤](#%E8%BF%87%E6%BB%A4)
         * [全文检索](#%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2)
-        * [文本匹配](#%E6%96%87%E6%9C%AC%E5%8C%B9%E9%85%8D)
-        * [搜索迭代器](#%E6%90%9C%E7%B4%A2%E8%BF%AD%E4%BB%A3%E5%99%A8)
-        * [使用Partition Key](#%E4%BD%BF%E7%94%A8partition-key)
         * [Rerankers](#rerankers)
-    + [高级用法](#%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95)
   * [向量模型](#%E5%90%91%E9%87%8F%E6%A8%A1%E5%9E%8B)
-- [关键字检索](#%E5%85%B3%E9%94%AE%E5%AD%97%E6%A3%80%E7%B4%A2)
-  * [搜索引擎](#%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E)
+  * [Advanced RAG](#advanced-rag)
+    + [查询增强](#%E6%9F%A5%E8%AF%A2%E5%A2%9E%E5%BC%BA)
+      - [创建假设问题](#%E5%88%9B%E5%BB%BA%E5%81%87%E8%AE%BE%E9%97%AE%E9%A2%98)
+      - [创建子查询](#%E5%88%9B%E5%BB%BA%E5%AD%90%E6%9F%A5%E8%AF%A2)
+      - [创建 StepBack Prompts](#%E5%88%9B%E5%BB%BA-stepback-prompts)
+    + [增强索引](#%E5%A2%9E%E5%BC%BA%E7%B4%A2%E5%BC%95)
+      - [构建分层索引](#%E6%9E%84%E5%BB%BA%E5%88%86%E5%B1%82%E7%B4%A2%E5%BC%95)
+      - [混合检索和重新排名](#%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2%E5%92%8C%E9%87%8D%E6%96%B0%E6%8E%92%E5%90%8D)
+    + [改进检索器](#%E6%94%B9%E8%BF%9B%E6%A3%80%E7%B4%A2%E5%99%A8)
+      - [句子窗口检索](#%E5%8F%A5%E5%AD%90%E7%AA%97%E5%8F%A3%E6%A3%80%E7%B4%A2)
+      - [元数据过滤](#%E5%85%83%E6%95%B0%E6%8D%AE%E8%BF%87%E6%BB%A4)
+    + [Generator 增强](#generator-%E5%A2%9E%E5%BC%BA)
+      - [压缩 LLM prompt](#%E5%8E%8B%E7%BC%A9-llm-prompt)
+      - [调整 prompt 中的块顺序](#%E8%B0%83%E6%95%B4-prompt-%E4%B8%AD%E7%9A%84%E5%9D%97%E9%A1%BA%E5%BA%8F)
+    + [增强 RAG Pipeline](#%E5%A2%9E%E5%BC%BA-rag-pipeline)
+      - [自我反思](#%E8%87%AA%E6%88%91%E5%8F%8D%E6%80%9D)
+      - [Query Routing with an Agent](#query-routing-with-an-agent)
 - [LangChain](#langchain)
   * [模型 API](#%E6%A8%A1%E5%9E%8B-api)
     + [OpenAI 模型封装](#openai-%E6%A8%A1%E5%9E%8B%E5%B0%81%E8%A3%85)
@@ -83,7 +89,6 @@
     + [手动实现一个Agent](#%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AAagent)
       - [Agent的核心流程](#agent%E7%9A%84%E6%A0%B8%E5%BF%83%E6%B5%81%E7%A8%8B)
       - [实现步骤](#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4)
-
 
 # 向量
 ## 什么是向量  
@@ -969,7 +974,20 @@ search_params = {
 6、归一化：对两组 K 强结果的得分进行归一化，将得分转换为 [0,1] 之间的范围   
 7、选择适当的 Rerankers 策略，对两组 Top-K 结果进行合并和重排，最终返回一组 Top-K 结果    
 
-一个混合搜索的示例：[示例](https://milvus.io/docs/zh/multi-vector-search.md#Examples)
+一个混合搜索的示例：[示例](advanced-rag%2Fhybrid-search%2FHybridSearch.py)     
+1、创建具有多个向量的 Collections           
+&emsp;&emsp; 1.1 定义 Schema     
+&emsp;&emsp; 1.2 创建索引     
+&emsp;&emsp; 1.3 创建 Collections     
+2、插入数据      
+3、创建多个 AnnSearchRequest 实例     
+&emsp;&emsp; 混合搜索是通过在hybrid_search() 函数中创建多个AnnSearchRequest 来实现的，其中每个AnnSearchRequest 代表一个特定向量场的基本 ANN 搜索请求。因此，在进行 Hybrid Search 之前，有必要为每个向量场创建一个AnnSearchRequest 。       
+&emsp;&emsp; 在混合搜索中，每个AnnSearchRequest 只支持一个查询向量。   
+4、配置 Rerankers 策略     
+&emsp;&emsp; 要对两组 ANN 搜索结果进行合并和重新排序，有必要选择适当的重新排序策略。Zilliz 支持两种重排策略：加权排名策略（WeightedRanker）和重 排序策略（RRFRanker）。在选择重排策略时，需要考虑的一个问题是，在向量场中是否需要强调一个或多个基本 ANN 搜索。    
+&emsp;&emsp; 关于Rerankers的详细信息，请参考下面 **Rerankers** 一节      
+5、执行混合搜索  
+
 ##### 查询
 查询是针对元数据进行过滤，本节是对 **过滤搜索** 一节的补充。    
 1、直接使用主键进行get查询
@@ -1056,20 +1074,182 @@ filter = 'name LIKE "%Pro%"' # 查找name 中包含 "Pro "一词的所有产品
 ````
 
 ##### 全文检索
+全文搜索的工作流程如下：  
+1、**文本输入**：插入原始文本文档或提供查询文本，无需手动嵌入。   
+2、**文本分析**：在文本处理中，分析器是将原始文本转换为结构化可搜索格式的关键组件。  
+3、**函数处理**：内置函数接收标记化术语，并将其转换为稀疏向量表示。     
+4、**Collections 存储**：Milvus 将这些稀疏嵌入存储在 Collections 中，以便高效检索。    
+5、**BM25 评分**：在搜索过程中，Milvus 应用 BM25 算法为存储的文档计算分数，并根据匹配结果与查询文本的相关性进行排序。   
 
+全文搜索开发步骤：   
+1、**创建 Collections**：设置一个带有必要字段的 Collections，并定义一个将原始文本转换为稀疏嵌入的函数。   
+2、**插入数据**：将原始文本文档插入 Collections。   
+3、**执行搜索**：使用查询文本搜索你的 Collections 并检索相关结果。
 
+[这里是一个全文搜索示例。](advanced-rag%2Ffull-text-search%2FFullTextSearch.py)   
+安装依赖：
+````shell
+pip install "pymilvus[model]" -U 
+````
 
-##### 文本匹配
+##### Rerankers  
+混合搜索和Rerankers的示例可参考这里：[示例](advanced-rag%2Fhybrid-search%2FHybridSearch.py)  
 
-##### 搜索迭代器
+下图展示了在 Milvus 中执行混合搜索的过程，并强调了重排在此过程中的作用。
 
+<img src=img/multi-vector-rerank.png width=600 />  
 
-##### Rerankers
+目前，Milvus 提供以下重新排序策略：  
+* WeightedRanker:这种方法通过计算来自不同向量搜索的得分（或向量距离）的加权平均值来合并结果。它根据每个向量场的重要性分配权重。   
+* RRFRanker:这种策略根据结果在不同向量列中的排名来合并结果。  
 
-### 高级用法
+1、WeightedRanker（加权评分）   
+&emsp;&emsp; WeightedRanker 策略根据每个向量字段的重要性，为每个向量检索路径的结果分配不同的权重。       
+&emsp;&emsp; WeightedRanker 的基本流程如下：    
+* **在检索过程中收集分数**：收集来自不同向量检索路径的结果及其分数。
+* **分数归一化**：将每条路径的得分归一化为 [0,1] 范围，其中接近 1 的值表示相关性较高。这种归一化非常重要，因为分数分布会随不同的度量类型而变化。例如，IP 的距离范围为 [-∞,+∞]，而 L2 的距离范围为 [0,+∞]。Milvus 采用arctan 函数，将数值转换为 [0,1] 范围，为不同度量类型提供标准化基础。
+* **权重分配**：为每个向量检索路径分配一个权重w𝑖 。用户指定的权重反映了数据源的可靠性、准确性或其他相关指标。每个权重的范围为 [0,1]。 
+* **分数融合**：计算归一化分数的加权平均值，得出最终分数。然后根据这些从高到低的分数对结果进行排序，生成最终的排序结果。
+
+&emsp;&emsp;  参数详解：  
+* 每个权重值的范围从 0（最不重要）到 1（最重要），影响最终的综合得分。
+* WeightedRanker 中提供的权重值总数应等于您之前创建的AnnSearchRequest 实例数。
+* 值得注意的是，由于不同度量类型的测量方法不同，我们对召回结果的距离进行了归一化处理，使其位于区间 [0,1]，其中 0 表示不同，1 表示相似。最终得分将是权重值和距离的总和。
+
+2、RRFRanker（互易等级融合）     
+&emsp;&emsp; RRF 的基本流程如下：   
+* 在检索过程中收集排名：检索器跨多个向量字段检索并对结果进行排序。
+* 排名融合：RRF 算法对每个检索器的排名进行权衡和合并。
+* 综合排名：根据综合得分对检索结果重新排序，得出最终结果    
+
 
 
 ## 向量模型
+
+
+
+
+
+## Advanced RAG
+标准的RAG检索过程如下：    
+1、首先将文档载入向量数据库中    
+2、将用户问题向量化，检索向量数据库，得到最相关的前 K 个文档块   
+3、将这些相关块注入LLM 的上下文提示中    
+4、最后，LLM 返回最终答案   
+整个过程如下图所示：
+
+<img src=img/rag.png width=600 />      
+
+本节讨论在标准的RAG检索过程中，如何提高 RAG 管道的性能。    
+
+### 查询增强  
+#### 创建假设问题       
+
+<img src=img/hypothetical_question.png width=600 />   
+
+1）这一方法首先使用LLM为每一条文档块生成一些假设问题，这些文档块可以回答与之对应的假设问题。在RAG阶段，进行一个query-to-query的搜索，先搜索到相关的假设问题，然后找到对应的文档块，再通过它们生成最后的回答。      
+
+2）这里的query-to-query指的是embedding模型的训练方式，训练一个query-to-query模型实际就是训练比较句子的相似性，而不是训练Q-A pair的相似性。所以它是一种对称的“域内（in-domain)”的训练模式，这种方式比不对称的“跨域(out-of-domain)”训练方式会稍微容易且直观一点。    
+
+3）这一方法绕过了在embedding搜索过程中的跨域不对称性，使用query-to-query的直接搜索，减轻了对embedding搜索的要求。但也引入了额外的生成假设问题的开销和不确定性。     
+
+4）额外的开销包括LLM生成假设问题的经济成本，时间成本。不确定性就是和可能的生成的不匹配的问题，或LLM的幻觉导致不懂装懂生成了错误的问题，或系统问题（如LLM网络访问出错）。   
+
+#### 创建子查询
+当用户查询过于复杂时，我们可以使用 LLM 将其分解为更简单的子查询，然后再将其传递给向量数据库和 LLM。让我们来看一个例子。    
+
+设想有用户问："Milvus 和 Zilliz Cloud 在功能上有什么不同？" 这个问题相当复杂，在我们的知识库中可能没有直接的答案。为了解决这个问题，我们可以将其拆分成两个更简单的子查询：
+* 子查询 1："Milvus 有哪些功能？"   
+* 子查询 2："Zilliz Cloud 有哪些功能？"   
+
+有了这些子查询后，我们将它们全部转换成向量嵌入后发送给向量数据库。然后，向量数据库会找出与每个子查询最相关的 Top-K 文档块。最后，LLM 利用这些信息生成更好的答案。    
+
+#### 创建 StepBack Prompts
+StepBack的思路是站在另外一个角度（或者站在更高的角度）来对用户的问题进行重新提问，使得检索更加准确。  
+举例说明：   
+**原始用户查询："我有一个包含 100 亿条记录的数据集，想把它存储到 Milvus 中进行查询。可以吗？**    
+如果拿用户原始问题直接搜索向量数据库，可能得不到答案，或者搜索的答案准确度很低。    
+为了简化这个用户查询，我们可以使用 LLM 生成一个更直接的StepBack问题：  
+**StepBack问题："Milvus 可以处理的数据集大小限制是多少？"**      
+以上就是Step back的思路。    
+
+如何实现StepBack？ 
+
+当然是通过提示词让大模型来完成了，比如下面这个提示词：
+````text
+You are an expert at world knowledge. 
+Your task is to step back and paraphrase a question to a more generic step-back question, which is easier to answer. 
+Here are a few examples:
+### Example 1
+Human: Could the members of The Police perform lawful arrests?
+AI: What can the members of The Police do?
+### Example 2
+Human: Jan Sindel’s was born in what country?
+AI: What is Jan Sindel’s personal history?
+### Example 3
+Human: I have a dataset with 10 billion records and want to store it in Milvus for querying. Is it possible?
+AI: What is the dataset size limit that Milvus can handle?
+````
+
+### 增强索引
+#### 构建分层索引
+在创建文档索引时，我们可以建立两级索引：一级是文档摘要索引，另一级是文档块索引。向量搜索过程包括两个阶段：首先，我们根据摘要过滤相关文档，随后，我们在这些相关文档中专门检索相应的文档块。    
+
+<img src=img/hierarchical_index.png width=600 /> 
+
+在涉及大量数据或数据分层的情况下，例如图书馆 Collections 中的内容检索，这种方法证明是有益的。
+
+#### 混合检索和重新排名
+这在上面 **混合搜索** 一节中做了详细说明。
+
+### 改进检索器
+#### 句子窗口检索
+我们之前介绍的RAG的标准流程中，第一步就是将文档灌入向量数据库中。但是文档灌入数据库不是说将整个文档一次性全部灌入，而是按照指定的块大小（chunk_size）进行切割，然后进行embedding之后再灌入。   
+那么这里就有一个关键的问题：chunk_size的大小如何确定？   
+当chunk_size较小时它与question的匹配度越高，但此时context（检索选取的K个最相似的文档）的信息量就会相对较少，这样也会导致最终的response质量变差。   
+而当chunk_size较大时虽然context的信息量较大，但是context与question的匹配度就会降低，这也会导致最终的response质量变差，这就是基本RAG架构的弊端所在。    
+
+句子窗口检索帮助我们解决这一问题。   
+
+句子-窗口检索主要思想是将文档按句子来切割即每个句子成为一个文档，在检索时候将问题和所有的句子向量进行匹配，当匹配到较高相似度的句子后，将该句子周围（前，后）的若干条句子作为context，当前句子的前后句子数量由参数window_size来确定。   
+
+下面利用llama-index来实现这一机制。
+
+#### 元数据过滤
+在上面 **过滤搜索** 一节中已经做了详细说明。
+
+### Generator 增强
+#### 压缩 LLM prompt 
+检索文档块中的噪声信息会严重影响 RAG 最终答案的准确性。LLMs 中有限的提示窗口也是获得更准确答案的障碍。为了应对这一挑战，我们可以压缩无关细节，强调关键段落，并减少检索文档块的整体上下文长度。   
+
+<img src=img/compress_prompt.png width=600 /> 
+
+这种方法类似于之前讨论过的混合检索和重排方法，即利用 Rerankers 筛选出不相关的文档块。
+
+#### 调整 prompt 中的块顺序
+论文["Lost in the middle"](https://arxiv.org/abs/2307.03172)中提到LLMs 在推理过程中经常会忽略给定文档中间的信息。相反，他们往往更依赖于文档开头和结尾的信息。  
+根据这一观察结果，我们可以调整检索知识块的顺序来提高答案质量：在检索多个知识块时，将置信度相对较低的知识块放在中间，而将置信度相对较高的知识块放在两端。
+
+### 增强 RAG Pipeline
+#### 自我反思
+这种方法在智能体 Agents 中融入了自我反思的概念。那么，这种技术是如何工作的呢？    
+
+一些最初检索到的 Top-K 文档块是模棱两可的，可能无法直接回答用户的问题。在这种情况下，我们可以进行第二轮反思，以验证这些文档块是否能真正解决查询问题。
+
+我们可以使用高效的反思方法（如自然语言推理（NLI）模型）进行反思，也可以使用互联网搜索等其他工具进行验证。   
+
+<img src=img/self_reflection.png width=600 />    
+
+#### Query Routing with an Agent 
+有时，我们不必使用 RAG 系统来回答简单的问题，因为它可能会导致更多的误解和对误导信息的推断。在这种情况下，我们可以在查询阶段使用智能体作为路由器。这个 Agents 会评估查询是否需要通过 RAG 管道。如果需要，则启动后续的 RAG 管道；否则，LLM 直接处理查询。   
+
+<img src=img/query_routing.png width=600 />     
+<img src=img/query_routing_with_sub_query.png width=600 />     
+
+Agents 可以有多种形式，包括 LLM、小型分类模型，甚至是一组规则。  
+通过根据用户意图路由查询，可以重新定向部分查询，从而显著提高响应时间，并明显减少不必要的噪音。  
+我们可以将查询路由技术扩展到 RAG 系统内的其他流程，例如确定何时利用网络搜索等工具、进行子查询或搜索图片。这种方法可确保 RAG 系统中的每个步骤都能根据查询的具体要求进行优化，从而提高信息检索的效率和准确性。
+
 
 
 # LangChain
