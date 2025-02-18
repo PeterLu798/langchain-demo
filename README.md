@@ -36,24 +36,30 @@
         * [过滤](#%E8%BF%87%E6%BB%A4)
         * [全文检索](#%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2)
         * [Rerankers](#rerankers)
+- [模型](#%E6%A8%A1%E5%9E%8B)
   * [向量模型](#%E5%90%91%E9%87%8F%E6%A8%A1%E5%9E%8B)
-  * [Advanced RAG](#advanced-rag)
-    + [查询增强](#%E6%9F%A5%E8%AF%A2%E5%A2%9E%E5%BC%BA)
-      - [创建假设问题](#%E5%88%9B%E5%BB%BA%E5%81%87%E8%AE%BE%E9%97%AE%E9%A2%98)
-      - [创建子查询](#%E5%88%9B%E5%BB%BA%E5%AD%90%E6%9F%A5%E8%AF%A2)
-      - [创建 StepBack Prompts](#%E5%88%9B%E5%BB%BA-stepback-prompts)
-    + [增强索引](#%E5%A2%9E%E5%BC%BA%E7%B4%A2%E5%BC%95)
-      - [构建分层索引](#%E6%9E%84%E5%BB%BA%E5%88%86%E5%B1%82%E7%B4%A2%E5%BC%95)
-      - [混合检索和重新排名](#%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2%E5%92%8C%E9%87%8D%E6%96%B0%E6%8E%92%E5%90%8D)
-    + [改进检索器](#%E6%94%B9%E8%BF%9B%E6%A3%80%E7%B4%A2%E5%99%A8)
-      - [句子窗口检索](#%E5%8F%A5%E5%AD%90%E7%AA%97%E5%8F%A3%E6%A3%80%E7%B4%A2)
-      - [元数据过滤](#%E5%85%83%E6%95%B0%E6%8D%AE%E8%BF%87%E6%BB%A4)
-    + [Generator 增强](#generator-%E5%A2%9E%E5%BC%BA)
-      - [压缩 LLM prompt](#%E5%8E%8B%E7%BC%A9-llm-prompt)
-      - [调整 prompt 中的块顺序](#%E8%B0%83%E6%95%B4-prompt-%E4%B8%AD%E7%9A%84%E5%9D%97%E9%A1%BA%E5%BA%8F)
-    + [增强 RAG Pipeline](#%E5%A2%9E%E5%BC%BA-rag-pipeline)
-      - [自我反思](#%E8%87%AA%E6%88%91%E5%8F%8D%E6%80%9D)
-      - [Query Routing with an Agent](#query-routing-with-an-agent)
+    + [bge-m3](#bge-m3)
+    + [sentence-transformers](#sentence-transformers)
+  * [Reranker模型](#reranker%E6%A8%A1%E5%9E%8B)
+    + [BGE](#bge)
+    + [Cross Encoder](#cross-encoder)
+- [Advanced RAG](#advanced-rag)
+  * [查询增强](#%E6%9F%A5%E8%AF%A2%E5%A2%9E%E5%BC%BA)
+    + [创建假设问题](#%E5%88%9B%E5%BB%BA%E5%81%87%E8%AE%BE%E9%97%AE%E9%A2%98)
+    + [创建子查询](#%E5%88%9B%E5%BB%BA%E5%AD%90%E6%9F%A5%E8%AF%A2)
+    + [创建 StepBack Prompts](#%E5%88%9B%E5%BB%BA-stepback-prompts)
+  * [增强索引](#%E5%A2%9E%E5%BC%BA%E7%B4%A2%E5%BC%95)
+    + [构建分层索引](#%E6%9E%84%E5%BB%BA%E5%88%86%E5%B1%82%E7%B4%A2%E5%BC%95)
+    + [混合检索和重新排名](#%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2%E5%92%8C%E9%87%8D%E6%96%B0%E6%8E%92%E5%90%8D)
+  * [改进检索器](#%E6%94%B9%E8%BF%9B%E6%A3%80%E7%B4%A2%E5%99%A8)
+    + [句子窗口检索](#%E5%8F%A5%E5%AD%90%E7%AA%97%E5%8F%A3%E6%A3%80%E7%B4%A2)
+    + [元数据过滤](#%E5%85%83%E6%95%B0%E6%8D%AE%E8%BF%87%E6%BB%A4)
+  * [Generator 增强](#generator-%E5%A2%9E%E5%BC%BA)
+    + [压缩 LLM prompt](#%E5%8E%8B%E7%BC%A9-llm-prompt)
+    + [调整 prompt 中的块顺序](#%E8%B0%83%E6%95%B4-prompt-%E4%B8%AD%E7%9A%84%E5%9D%97%E9%A1%BA%E5%BA%8F)
+  * [增强 RAG Pipeline](#%E5%A2%9E%E5%BC%BA-rag-pipeline)
+    + [自我反思](#%E8%87%AA%E6%88%91%E5%8F%8D%E6%80%9D)
+    + [Query Routing with an Agent](#query-routing-with-an-agent)
 - [LangChain](#langchain)
   * [模型 API](#%E6%A8%A1%E5%9E%8B-api)
     + [OpenAI 模型封装](#openai-%E6%A8%A1%E5%9E%8B%E5%B0%81%E8%A3%85)
@@ -89,6 +95,7 @@
     + [手动实现一个Agent](#%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AAagent)
       - [Agent的核心流程](#agent%E7%9A%84%E6%A0%B8%E5%BF%83%E6%B5%81%E7%A8%8B)
       - [实现步骤](#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4)
+
 
 # 向量
 ## 什么是向量  
@@ -1123,14 +1130,70 @@ pip install "pymilvus[model]" -U
 * 综合排名：根据综合得分对检索结果重新排序，得出最终结果    
 
 
-
+# 模型
 ## 向量模型
 
+目前流行的密集向量、稀疏向量生成模型：  
+
+|Embedding Function|类型|语言|
+|:----|:----|:----|
+|bge-m3|Hybrid|支持多语言|
+|sentence-transformers|Dense|英语|
+
+### bge-m3
+
+1、bge-m3原生调用示例：[BGEM3Native.py](models%2Fbge-m3%2FBGEM3Native.py)   
+```text
+BGEM3FlagModel 类参数详解：  
+    model_name_or_path               (str): 模型名字或下载地址。如果提供了下载地址，那么会按照地址去下载，如果没有默认从HuggingFace Hub拉去
+    normalize_embeddings             (bool, optional): True/False, 是否为标准稠密向量，默认True
+    use_fp16                         (bool, optional): True/False, 如果为True则利用半精度浮点技术来加快计算速度，提高计算性能，默认True
+    query_instruction_for_retrieval: (Optional[str], optional): 当加载你微调后的模型时，如果你没有在训练的json文件中为query添加指令，则将其设置为空字符串;
+                                                                如果你在训练数据中为query添加了指令，更改为你新设置的指令。
+    query_instruction_format:        (str, optional): The template for :attr:`query_instruction_for_retrieval`. Defaults to :data:`"{}{}"`.
+    devices                          (Optional[Union[str, int, List[str], List[int]]], optional): 用CPU还是GPU来推理或训练模型，
+                                     例如：使用 CPU：devices="cpu"，使用第一个 GPU：devices="cuda:0"，使用多个GPU：devices=["cuda:0", "cuda:1"]
+    pooling_method                   (str, optional): Pooling method to get embedding vector from the last hidden state. Defaults to :data:`"cls"`.
+    trust_remote_code                (bool, optional): trust_remote_code for HF datasets or models. Defaults to :data:`False`.
+    cache_dir                        (Optional[str], optional): 缓存模型的位置，默认为空
+    cobert_dim                       (int, optional): 用于指定 ColBERT 线性层（colbert linear）的维度大小的参数，默认-1隐藏层大小
+    batch_size                       (int, optional): 模型在推理或训练过程中，一次性处理的样本数量，默认`256`.
+    query_max_length                 (int, optional): Maximum length for query. Defaults to :data:`512`.
+    passage_max_length               (int, optional): 指定模型在处理文本段落时的最大长度，默认512
+    return_dense                     (bool, optional): If true, will return the dense embedding. Defaults to :data:`True`.
+    return_sparse                    (bool, optional): If true, will return the sparce embedding. Defaults to :data:`False`.
+    return_colbert_vecs              (bool, optional): If true, will return the colbert vectors. Defaults to :data:`False`.
+      
+```
+2、Milvus集成bge-m3 调用示例：[BGEM3Milvus.py](models%2Fbge-m3%2FBGEM3Milvus.py)    
+
+### sentence-transformers	
+1、使用SentenceTransformer库调用示例：[SentenceTransformerNative.py](models%2Fsentence-transformers%2FSentenceTransformerNative.py)     
+2、Milvus集成sentence-transformers调用示例：[SentenceTransformerMilvus.py](models%2Fsentence-transformers%2FSentenceTransformerMilvus.py)  
+
+## Reranker模型
+
+|Rerank Function| 是否开源 |
+|:----|:-----|
+|BGE|是|
+|Cross Encoder|是|
+
+### BGE
+1、一个BGE重排序的例子：[BGEReranker.py](models%2Fbge-m3%2FBGEReranker.py)   
+2、Milvus中利用BGE进行重排序例子：[BGERerankerMilvus.py](models%2Fbge-m3%2FBGERerankerMilvus.py)
+### Cross Encoder
+1、Bi-Encoder vs. Cross-Encoder
+
+<img src=img/Bi_vs_Cross-Encoder.png width=600 />   
+
+Bi-Encoders是真正能将句子转换为向量的架构模型，而Cross-Encoder只是比较两个向量之间的距离，它并不能将句子转换为向量。这就是Bi-Encoder和Cross-Encoder之间的区别。    
+
+2、使用Cross-Encoder的例子：[CrossEncoderNative.py](models%2Fsentence-transformers%2FCrossEncoderNative.py)  
+
+3、Milvus集成Cross-Encoder的例子：[CrossEncoderMilvus.py](models%2Fsentence-transformers%2FCrossEncoderMilvus.py)
 
 
-
-
-## Advanced RAG
+# Advanced RAG
 标准的RAG检索过程如下：    
 1、首先将文档载入向量数据库中    
 2、将用户问题向量化，检索向量数据库，得到最相关的前 K 个文档块   
@@ -1142,8 +1205,8 @@ pip install "pymilvus[model]" -U
 
 本节讨论在标准的RAG检索过程中，如何提高 RAG 管道的性能。    
 
-### 查询增强  
-#### 创建假设问题       
+## 查询增强  
+### 创建假设问题       
 
 <img src=img/hypothetical_question.png width=600 />   
 
@@ -1155,7 +1218,7 @@ pip install "pymilvus[model]" -U
 
 4）额外的开销包括LLM生成假设问题的经济成本，时间成本。不确定性就是和可能的生成的不匹配的问题，或LLM的幻觉导致不懂装懂生成了错误的问题，或系统问题（如LLM网络访问出错）。   
 
-#### 创建子查询
+### 创建子查询
 当用户查询过于复杂时，我们可以使用 LLM 将其分解为更简单的子查询，然后再将其传递给向量数据库和 LLM。让我们来看一个例子。    
 
 设想有用户问："Milvus 和 Zilliz Cloud 在功能上有什么不同？" 这个问题相当复杂，在我们的知识库中可能没有直接的答案。为了解决这个问题，我们可以将其拆分成两个更简单的子查询：
@@ -1164,7 +1227,7 @@ pip install "pymilvus[model]" -U
 
 有了这些子查询后，我们将它们全部转换成向量嵌入后发送给向量数据库。然后，向量数据库会找出与每个子查询最相关的 Top-K 文档块。最后，LLM 利用这些信息生成更好的答案。    
 
-#### 创建 StepBack Prompts
+### 创建 StepBack Prompts
 StepBack的思路是站在另外一个角度（或者站在更高的角度）来对用户的问题进行重新提问，使得检索更加准确。  
 举例说明：   
 **原始用户查询："我有一个包含 100 亿条记录的数据集，想把它存储到 Milvus 中进行查询。可以吗？**    
@@ -1191,19 +1254,19 @@ Human: I have a dataset with 10 billion records and want to store it in Milvus f
 AI: What is the dataset size limit that Milvus can handle?
 ````
 
-### 增强索引
-#### 构建分层索引
+## 增强索引
+### 构建分层索引
 在创建文档索引时，我们可以建立两级索引：一级是文档摘要索引，另一级是文档块索引。向量搜索过程包括两个阶段：首先，我们根据摘要过滤相关文档，随后，我们在这些相关文档中专门检索相应的文档块。    
 
 <img src=img/hierarchical_index.png width=600 /> 
 
 在涉及大量数据或数据分层的情况下，例如图书馆 Collections 中的内容检索，这种方法证明是有益的。
 
-#### 混合检索和重新排名
+### 混合检索和重新排名
 这在上面 **混合搜索** 一节中做了详细说明。
 
-### 改进检索器
-#### 句子窗口检索
+## 改进检索器
+### 句子窗口检索
 我们之前介绍的RAG的标准流程中，第一步就是将文档灌入向量数据库中。但是文档灌入数据库不是说将整个文档一次性全部灌入，而是按照指定的块大小（chunk_size）进行切割，然后进行embedding之后再灌入。   
 那么这里就有一个关键的问题：chunk_size的大小如何确定？   
 当chunk_size较小时它与question的匹配度越高，但此时context（检索选取的K个最相似的文档）的信息量就会相对较少，这样也会导致最终的response质量变差。   
@@ -1215,23 +1278,23 @@ AI: What is the dataset size limit that Milvus can handle?
 
 下面利用llama-index来实现这一机制。
 
-#### 元数据过滤
+### 元数据过滤
 在上面 **过滤搜索** 一节中已经做了详细说明。
 
-### Generator 增强
-#### 压缩 LLM prompt 
+## Generator 增强
+### 压缩 LLM prompt 
 检索文档块中的噪声信息会严重影响 RAG 最终答案的准确性。LLMs 中有限的提示窗口也是获得更准确答案的障碍。为了应对这一挑战，我们可以压缩无关细节，强调关键段落，并减少检索文档块的整体上下文长度。   
 
 <img src=img/compress_prompt.png width=600 /> 
 
 这种方法类似于之前讨论过的混合检索和重排方法，即利用 Rerankers 筛选出不相关的文档块。
 
-#### 调整 prompt 中的块顺序
+### 调整 prompt 中的块顺序
 论文["Lost in the middle"](https://arxiv.org/abs/2307.03172)中提到LLMs 在推理过程中经常会忽略给定文档中间的信息。相反，他们往往更依赖于文档开头和结尾的信息。  
 根据这一观察结果，我们可以调整检索知识块的顺序来提高答案质量：在检索多个知识块时，将置信度相对较低的知识块放在中间，而将置信度相对较高的知识块放在两端。
 
-### 增强 RAG Pipeline
-#### 自我反思
+## 增强 RAG Pipeline
+### 自我反思
 这种方法在智能体 Agents 中融入了自我反思的概念。那么，这种技术是如何工作的呢？    
 
 一些最初检索到的 Top-K 文档块是模棱两可的，可能无法直接回答用户的问题。在这种情况下，我们可以进行第二轮反思，以验证这些文档块是否能真正解决查询问题。
@@ -1240,7 +1303,7 @@ AI: What is the dataset size limit that Milvus can handle?
 
 <img src=img/self_reflection.png width=600 />    
 
-#### Query Routing with an Agent 
+### Query Routing with an Agent 
 有时，我们不必使用 RAG 系统来回答简单的问题，因为它可能会导致更多的误解和对误导信息的推断。在这种情况下，我们可以在查询阶段使用智能体作为路由器。这个 Agents 会评估查询是否需要通过 RAG 管道。如果需要，则启动后续的 RAG 管道；否则，LLM 直接处理查询。   
 
 <img src=img/query_routing.png width=600 />     
