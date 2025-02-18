@@ -1316,21 +1316,67 @@ Agents 可以有多种形式，包括 LLM、小型分类模型，甚至是一组
 
 
 # LangChain
-## 模型 API
+LangChain 的核心组件：  
+1、模型 I/O 封装
+* LLMs：大语言模型
+* Chat Models：一般基于 LLMs，但按对话结构重新封装
+* PromptTemple：提示词模板
+* OutputParser：解析输出
+
+2、数据连接封装
+* Document Loaders：各种格式文件的加载器
+* Document Transformers：对文档的常用操作，如：split, filter, translate, extract metadata, etc
+* Text Embedding Models：文本向量化表示，用于检索等操作（啥意思？别急，后面详细讲）
+* Verctorstores: （面向检索的）向量的存储
+* Retrievers: 向量的检索
+
+3、对话历史管理
+* 对话历史的存储、加载与剪裁
+
+4、架构封装
+* Chain：实现一个功能或者一系列顺序功能组合
+* Agent：根据用户输入，自动规划执行步骤，自动选择每步需要的工具，最终完成用户指定的功能
+    + Tools：调用外部功能的函数，例如：调 google 搜索、文件 I/O、Linux Shell 等等
+    + Toolkits：操作某软件的一组工具集，例如：操作 DB、操作 Gmail 等等
+
+5、Callbacks
+
+## 大语言模型封装
 把不同的模型，统一封装成一个接口，方便更换模型而不用重构代码。
-### OpenAI 模型封装
+### OpenAI
+1、安装依赖
 ```shell
 pip install --upgrade langchain
 pip install --upgrade langchain-openai
 pip install --upgrade langchain-community
 ```
-[OpenAI.py](models%2FOpenAI.py)
-### Ollama 封装
+2、一个OpenAI的例子：[OpenAI.py](langchain%2Fllms%2Fopenai%2FOpenAI.py)     
+* 调用OpenAI
+* 多轮对话
+
+### Deepseek
+由于deepseek过于火爆，我们无法直接通过deepseek接口来调用他的服务，这里可以借用一些三方平台来调用deepseek。     
+
+1、通过siliconflow来调用，示例：[Siliconflow.py](langchain%2Fllms%2Fsiliconflow%2FSiliconflow.py)      
+* 注册https://siliconflow.cn/zh-cn/，获得api_key（以 sk- 开头）
+* 用api_key填到配置文件中：SILICONFLOW_API_KEY=api_key
+* 即可调用代码  
+
+### Ollama  
+1、本地安装Ollama，并启动模型
+* 下载安装Ollama: [下载地址](https://github.com/ollama/ollama)
+* 下载并运行模型，例如 ollama run deepseek-r1:14b
+* 如果想停止运行一个模型，则用stop，例如 ollama stop deepseek-r1:14b
+* 如果想卸载一个模型，则用rm，例如 ollama rm llama3.2
+* 查看本地都装了哪些模型：ollama list
+* 查看正在运行的模型：ollama ps
+
+2、添加依赖
 ````shell
 pip install -U langchain-ollama
 ````
-[Ollama.py](models%2FOllama.py)
-### 多轮对话 Session 封装
+
+3、一个Ollama的例子：[Ollama.py](langchain%2Fllms%2Follama%2FOllama.py)    
 
 ## 模型的输入与输出
 ### Prompt 模板封装

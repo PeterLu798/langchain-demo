@@ -1,11 +1,11 @@
 import os
 
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 from langchain_huggingface import HuggingFaceEmbeddings
 
-_ = load_dotenv(find_dotenv(filename="../env/key.env"))
-
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings, AzureChatOpenAI, AzureOpenAIEmbeddings
+
+load_dotenv()
 
 
 class ChatModelFactory:
