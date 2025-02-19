@@ -4,7 +4,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 # 加载文档
-loader = PyMuPDFLoader("llama2.pdf")
+loader = PyMuPDFLoader("document-loaders/llama2.pdf")
 pages = loader.load_and_split()
 
 # 文档切分

@@ -1326,7 +1326,7 @@ LangChain 的核心组件：
 2、数据连接封装
 * Document Loaders：各种格式文件的加载器
 * Document Transformers：对文档的常用操作，如：split, filter, translate, extract metadata, etc
-* Text Embedding Models：文本向量化表示，用于检索等操作（啥意思？别急，后面详细讲）
+* Text Embedding Models：文本向量化表示，用于检索等操作
 * Verctorstores: （面向检索的）向量的存储
 * Retrievers: 向量的检索
 
@@ -1350,14 +1350,14 @@ pip install --upgrade langchain
 pip install --upgrade langchain-openai
 pip install --upgrade langchain-community
 ```
-2、一个OpenAI的例子：[OpenAI.py](langchain%2Fllms%2Fopenai%2FOpenAI.py)     
+2、一个OpenAI的例子：[OpenAI.py](mylangchain%2Fllms%2Fopenai%2FOpenAI.py)     
 * 调用OpenAI
 * 多轮对话
 
 ### Deepseek
 由于deepseek过于火爆，我们无法直接通过deepseek接口来调用他的服务，这里可以借用一些三方平台来调用deepseek。     
 
-1、通过siliconflow来调用，示例：[Siliconflow.py](langchain%2Fllms%2Fsiliconflow%2FSiliconflow.py)      
+1、通过siliconflow来调用，示例：[Siliconflow.py](mylangchain%2Fllms%2Fsiliconflow%2FSiliconflow.py)      
 * 注册https://siliconflow.cn/zh-cn/，获得api_key（以 sk- 开头）
 * 用api_key填到配置文件中：SILICONFLOW_API_KEY=api_key
 * 即可调用代码  
@@ -1376,52 +1376,134 @@ pip install --upgrade langchain-community
 pip install -U langchain-ollama
 ````
 
-3、一个Ollama的例子：[Ollama.py](langchain%2Fllms%2Follama%2FOllama.py)    
+3、一个Ollama的例子：[Ollama.py](mylangchain%2Fllms%2Follama%2FOllama.py)    
 
 ## 模型的输入与输出
 ### Prompt 模板封装
-1. PromptTemplate 可以在模板中自定义变量
-2. ChatPromptTemplate 用模板表示的对话上下文
-3. MessagesPlaceholder 把多轮对话变成模板
-### 从文件加载 Prompt 模板
-[PromptFromFile.py](io%2FPromptFromFile.py)
+1、PromptTemplate     
+* 可以在模板中自定义变量     
+* 代码示例：[PromptTemplate.py](mylangchain%2Fio%2Finput%2FPromptTemplate.py)
+````python
+from langchain.prompts import PromptTemplate
+
+template = PromptTemplate.from_template("给我讲个关于{subject}的笑话")
+print("===Template===")
+print(template)
+print("===Prompt===")
+print(template.format(subject='小明'))
+````
+2、ChatPromptTemplate      
+* 用模板表示的对话上下文      
+* 代码示例：[ChatPromptTemplate.py](mylangchain%2Fio%2Finput%2FChatPromptTemplate.py)    
+
+3、MessagesPlaceholder      
+* 把多轮对话变成模板   
+* 代码示例：[MessagesPlaceholder.py](mylangchain%2Fio%2Finput%2FMessagesPlaceholder.py)
+
+4、从文件加载 Prompt 模板    
+* 代码示例：[PromptFromFile.py](mylangchain%2Fio%2Finput%2FPromptFromFile.py)
+
+
 ### 结构化输出
-1. 直接输出 Pydantic 对象
-2. 输出指定格式的 JSON
-3. 使用 OutputParser 可以按指定格式解析模型的输出，输出形式为Json   
-代码示例：[OutputParser.py](io%2Foutput%2FOutputParser.py)
+
+1、使用 OutputParser 可以按指定格式解析模型的输出，输出形式为Json      
+
+代码示例：[OutputParserDemo.py](mylangchain%2Fio%2Foutput%2FOutputParserDemo.py)
 ````text
 {'year': 2023, 'month': 4, 'day': 6, 'era': 'AD'}
 ````
-4. 使用PydanticOutputParser直接输出对象类型   
-代码示例：[PydanticOutputParserDemo.py](io%2Foutput%2FPydanticOutputParserDemo.py)
+2、使用PydanticOutputParser直接输出对象类型   
+
+代码示例：[PydanticOutputParserDemo.py](mylangchain%2Fio%2Foutput%2FPydanticOutputParserDemo.py)
 ````text
 year=2023 month=4 day=6 era='AD'
 ````
-5. OutputFixingParser 利用大模型做格式自动纠错   
-代码示例：[OutputFixingParserDemo.py](io%2Foutput%2FOutputFixingParserDemo.py)
+3、OutputFixingParser 利用大模型做格式自动纠错   
 
-## Function Calling
-大模型调用本地方法。
+代码示例：[OutputFixingParserDemo.py](mylangchain%2Fio%2Foutput%2FOutputFixingParserDemo.py)
+
+### Function Calling
+建议本节使用ChatGpt大模型来开发，因为截至目前（2025/2/19）来说，DeepSeek的function calling 并不稳定，返回的最终结果为空。这一点在deepseek官网文档中也得到了印证：  
+![img.png](img/deepseek_tip.png)
+
+基于Langchain的Function Calling的整个流程如下：  
+1、定义你的工具方法，并在方法上打上 @tool 标记  
+2、如果要定义工具 schemas 需要继承 BaseModel 类，如下例子：
+````python
+from langchain_core.pydantic_v1 import BaseModel, Field
+
+
+# Note that the docstrings here are crucial, as they will be passed along
+# to the model along with the class name.
+class add(BaseModel):
+    """Add two integers together."""
+
+    a: int = Field(..., description="First integer")
+    b: int = Field(..., description="Second integer")
+
+
+class multiply(BaseModel):
+    """Multiply two integers together."""
+
+    a: int = Field(..., description="First integer")
+    b: int = Field(..., description="Second integer")
+
+
+tools = [add, multiply]
+````
+3、将工具和大模型绑定  
+````python
+llm_with_tools = llm.bind_tools(tools)
+````
+4、将Function Calling 的结果作为历史消息，回传给大模型  
+5、大模型返回最终结果   
+
+一个例子：[FunctionCalling.py](mylangchain%2Ffuncall%2FFunctionCalling.py)
 
 ## 数据连接封装
 ### 文档加载器：Document Loaders
+LangChain提供了以下多种文档加载器：  
+* [How to: load PDF files](https://python.langchain.com/docs/how_to/document_loader_pdf/)
+* [How to: load web pages](https://python.langchain.com/docs/how_to/document_loader_web/)
+* [How to: load CSV data](https://python.langchain.com/docs/how_to/document_loader_csv/)
+* [How to: load data from a directory](https://python.langchain.com/docs/how_to/document_loader_directory/)
+* [How to: load HTML data](https://python.langchain.com/docs/how_to/document_loader_html/)
+* [How to: load JSON data](https://python.langchain.com/docs/how_to/document_loader_json/)
+* [How to: load Markdown data](https://python.langchain.com/docs/how_to/document_loader_markdown/)
+* [How to: load Microsoft Office data](https://python.langchain.com/docs/how_to/document_loader_office_file/)
+* [How to: write a custom document loader](https://python.langchain.com/docs/how_to/document_loader_custom/)
+
+以下是一个PDF加载器的示例：[PDFLoader.py](mylangchain%2Fdata-connection%2Fdocument-loaders%2FPDFLoader.py)   
+
 ```shell
-pip install pymupdf
+pip install -qU pypdf
 ```
-### 文档处理器
-#### TextSplitter
+### Text splitters
+LangChain提供了以下几种文档处理方法：  
+* [How to: recursively split text](https://python.langchain.com/docs/how_to/recursive_text_splitter/)
+* [How to: split HTML](https://python.langchain.com/docs/how_to/split_html/)
+* [How to: split by character](https://python.langchain.com/docs/how_to/character_text_splitter/)
+* [How to: split code](https://python.langchain.com/docs/how_to/code_splitter/)
+* [How to: split Markdown by headers](https://python.langchain.com/docs/how_to/markdown_header_metadata_splitter/)
+* [How to: recursively split JSON](https://python.langchain.com/docs/how_to/recursive_json_splitter/)
+* [How to: split text into semantic chunks](https://python.langchain.com/docs/how_to/semantic-chunker/)
+* [How to: split by tokens](https://python.langchain.com/docs/how_to/split_by_token/)
+
+在 [PDFLoader.py](mylangchain%2Fdata-connection%2Fdocument-loaders%2FPDFLoader.py) 中一个TextSplitter的简单案例。
+
 ```shell
-pip install --upgrade langchain-text-splitters
+pip install -qU langchain-text-splitters
 ```
 
-### 向量数据库与向量检索
-#### 向量模型
-1. huggingface
-````shell
-pip install -qU langchain-huggingface
-````
-示例：[VectorstoreDemo.py](dataconnection%2FVectorstoreDemo.py)
+### Embedding models
+关于向量模型我们在 **向量模型** 一节中已经做了详细说明，这里简单介绍下Langchain 是如何集成这些向量的。    
+以 bge-m3 为例
+
+### Vector stores
+
+
+### Retrievers
+
 
 ## 对话历史管理
 ### 历史记录的剪裁

@@ -1,7 +1,8 @@
 # 加载环境变量
 from dotenv import load_dotenv, find_dotenv
 
-_ = load_dotenv(find_dotenv(filename="./env/key.env"))
+# _ = load_dotenv(find_dotenv(filename="./env/key.env"))
+load_dotenv()
 
 from agt.ReAct import ReActAgent
 from models.Factory import ChatModelFactory

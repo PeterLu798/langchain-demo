@@ -1,10 +1,13 @@
+from dotenv import load_dotenv
 from langchain.prompts import (
     ChatPromptTemplate,
     HumanMessagePromptTemplate,
     MessagesPlaceholder,
 )
 from langchain_core.messages import AIMessage, HumanMessage
-from langchain_ollama import OllamaLLM
+from mylangchain.llms.siliconflow.Siliconflow import SiliconflowFactory
+
+load_dotenv()
 
 human_prompt = "Translate your answer to {language}."
 human_message_template = HumanMessagePromptTemplate.from_template(human_prompt)
@@ -26,8 +29,13 @@ messages = chat_prompt.format_prompt(
 )
 
 print(messages.to_messages())
+"""
+Human: Who is Elon Musk?
+AI: Elon Musk is a billionaire entrepreneur, inventor, and industrial designer
+Human: Translate your answer to 中文.
+"""
 
-llm = OllamaLLM(model="deepseek-r1:14b")
+llm = SiliconflowFactory.get_default_model()
 
 result = llm.invoke(messages)
 print(result)

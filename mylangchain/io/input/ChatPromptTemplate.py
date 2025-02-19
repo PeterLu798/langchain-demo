@@ -1,9 +1,13 @@
+from dotenv import load_dotenv
 from langchain.prompts import (
     ChatPromptTemplate,
     HumanMessagePromptTemplate,
     SystemMessagePromptTemplate,
 )
-from langchain_ollama import OllamaLLM
+
+from mylangchain.llms.siliconflow.Siliconflow import SiliconflowFactory
+
+load_dotenv()
 
 template = ChatPromptTemplate.from_messages(
     [
@@ -13,15 +17,13 @@ template = ChatPromptTemplate.from_messages(
     ]
 )
 
-llm = OllamaLLM(model="deepseek-r1:14b")
+llm = SiliconflowFactory.get_default_model()
 
 prompt = template.format_messages(
-    product="AGI课堂",
+    product="电信",
     name="瓜瓜",
     query="你是谁"
 )
-
-print(prompt)
 
 ret = llm.invoke(prompt)
 
