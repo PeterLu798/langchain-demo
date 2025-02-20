@@ -52,9 +52,7 @@ runnable = (
 # 直接运行
 ret = runnable.invoke("不超过100元的流量大的套餐有哪些")
 print(
-    json.dumps(
-        ret.dict(),
+    ret.model_dump_json(
         indent=4,
-        ensure_ascii=False
     )
 )

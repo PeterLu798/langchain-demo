@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
+from langchain_deepseek import ChatDeepSeek
 
 
 class SiliconflowFactory:
@@ -12,10 +12,10 @@ class SiliconflowFactory:
 
     @classmethod
     def get_model(cls, model_name: str):
-        return ChatOpenAI(
+        return ChatDeepSeek(
             model=model_name,  # 模型名称
-            openai_api_key=os.getenv("SILICONFLOW_API_KEY"),  # 在平台注册账号后获取
-            openai_api_base="https://api.siliconflow.cn/v1",  # 平台 API 地址
+            api_key=os.getenv("SILICONFLOW_API_KEY"),  # 在平台注册账号后获取
+            api_base="https://api.siliconflow.cn/v1",  # 平台 API 地址
             **cls.model_params,
         )
 

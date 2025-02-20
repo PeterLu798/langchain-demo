@@ -495,6 +495,14 @@ conn = connections.connect(host="127.0.0.1", port=19530)
 collection_name1 = "tutorial_1"
 collection1 = Collection(name=collection_name1, schema=schema, using='default', shards_num=2)
 ````
+4. 释放 Collections   
+搜索和查询是内存密集型操作。为节约成本，建议释放当前不使用的 Collection。
+````python
+client.release_collection(
+    collection_name="custom_quick_setup"
+)
+````
+
 #### Insert & Delete
 1. Insert
 ````python
@@ -1496,20 +1504,45 @@ pip install -qU langchain-text-splitters
 ```
 
 ### Embedding models
-关于向量模型我们在 **向量模型** 一节中已经做了详细说明，这里简单介绍下Langchain 是如何集成这些向量的。    
-以 bge-m3 为例
+关于向量模型我们在 **[向量模型]()** 一节中已经做了详细说明，这里简单介绍下Langchain 是如何集成这些向量模型的。    
+以 bge-m3 为例，在LangChain中我们可以使用HuggingFace库来调用它：  
+1、添加依赖
+```shell
+pip install -qU langchain-huggingface
+```
+2、实现
+````python
+from langchain_huggingface import HuggingFaceEmbeddings
+
+embeddings_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+````
+3、这里提供一个获取向量模型的工厂类：[LCEmbeddings.py](mylangchain%2Fdata-connection%2Fembedding%2FLCEmbeddings.py)
 
 ### Vector stores
+我们在 **[向量数据库]()** 一节中已经详细讲解了目前最主流的向量数据库Milvus。接下来看看在LangChain中如何使用它。   
 
+```shell
+pip install -qU  langchain_milvus
+```
 
 ### Retrievers
 
 
 ## 对话历史管理
+
 ### 历史记录的剪裁
-[TrimMessage.py](history%2FTrimMessage.py)
+一个历史记录裁剪的案例：[TrimMessage.py](mylangchain%2Fhistory%2FTrimMessage.py)   
+使用 trim_messages 方法来裁剪记录。
+
+
 ### 过滤带标识的历史记录
-[FilterMessage.py](history%2FFilterMessage.py)
+通过filter_messages方法来过滤历史记录。   
+一个历史记录过滤案例：[FilterMessage.py](mylangchain%2Fhistory%2FFilterMessage.py)
+
+### 存储与管理对话历史
+可以根据session_id或其他能区别一个用户的标识，来过滤历史记录，选择正确的个人历史记录带入上下文。   
+存储喝管理对话历史的案例：[RunnableWithHistory.py](mylangchain%2Fhistory%2FRunnableWithHistory.py)
+
 
 ## LCEL
 LCEL全称：LangChain Expression Language
@@ -1531,7 +1564,7 @@ LCEL 的一些亮点包括：
 [StreamDemo.py](lcel%2FStreamDemo.py)
 ### 用 LCEL 实现 RAG
 [Index.py](rag%2FIndex.py)
-### 用 LCEL 实现工厂模式（选）
+### 用 LCEL 实现工厂模式
 [ConfigurableDemo.py](lcel%2FConfigurableDemo.py)
 ### 存储与管理对话历史
 [RunnableWithHistory.py](history%2FRunnableWithHistory.py)
