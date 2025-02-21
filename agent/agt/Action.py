@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 
 
 class Action(BaseModel):
-    name: str = Field(description="Tool name")
+    name: str = Field(description="工具名称")
     args: Optional[Dict[str, Any]] = Field(description="Tool input arguments, containing arguments names and values")
 
     def __str__(self):

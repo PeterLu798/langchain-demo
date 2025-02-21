@@ -2,7 +2,6 @@
 from dotenv import load_dotenv, find_dotenv
 
 # _ = load_dotenv(find_dotenv(filename="./env/key.env"))
-load_dotenv()
 
 from agt.ReAct import ReActAgent
 from models.Factory import ChatModelFactory
@@ -25,9 +24,10 @@ def launch_agent(agent: ReActAgent):
 
 
 def main():
+    load_dotenv()
     # 语言模型
     llm = ChatModelFactory.get_model("deepseek")
-    # llm = ChatModelFactory.get_model("deepseek")
+    # llm = ChatModelFactory.get_default_model() # 默认使用 gpt-3.5-turbo
 
     # 自定义工具集
     tools = [

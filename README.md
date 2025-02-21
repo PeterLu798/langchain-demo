@@ -1566,8 +1566,7 @@ LCEL 的一些亮点包括：
 [Index.py](rag%2FIndex.py)
 ### 用 LCEL 实现工厂模式
 [ConfigurableDemo.py](lcel%2FConfigurableDemo.py)
-### 存储与管理对话历史
-[RunnableWithHistory.py](history%2FRunnableWithHistory.py)
+
 
 ## LangServe
 LangServe 用于将 Chain 或者 Runnable 部署成一个 REST API 服务。
@@ -1580,49 +1579,87 @@ pip install "langserve[client]"
 pip install "langserve[server]"
 ```
 代码示例：  
-[Server.py](lanagservice%2FServer.py)  
-[Client.py](lanagservice%2FClient.py)
+[Server.py](mylangchain%2Flangserve%2FServer.py)     
+[Client.py](mylangchain%2Flangserve%2FClient.py)
 
 ## 智能体架构：Agent
 ### 什么是智能体（Agent）
 将大语言模型作为一个推理引擎。给定一个任务，智能体自动生成完成任务所需的步骤，执行相应动作（例如选择并调用工具），直到任务完成。
 
 1. 智能体的目的：推理复杂任务
-2. 智能体的要素：工具集、短时记忆（内部）、长时记忆（多轮对话历史）
+2. 智能体的要素：工具集、短时记忆（内部）、长时记忆（多轮对话历史）  
 
-### 智能体类型：ReAct
-ReAct智能体架构：
-![img.png](img/react.png)
-#### LangChain Hub
-1. 网站：https://smith.langchain.com/hub
-2. LangChain Hub依赖包
-```shell
-pip install --upgrade langchainhub
-```
-3. 下载模板
+### 关键概念
+1、AgentAction      
+就是一个模型类，类中包含的属性有：  
+* name: (或者叫其他任何名字都可以) 代表工具名称(str)
+* args: 工具方法参数(Dict[str, Any])  
+* 小建议：所有数据建模的类可以继承 pydantic 库的 BaseModel 类来建模，有很多功能可以直接用，比如缺省值、参数校验等等  
+
+2、AgentFinish    
+就是你的模型类的对象中，至少要有一个工具是表示 "结束" 事件的，工具名称可以叫 "FINISH" 或随便其它什么都可以，然后提供这个名称所对应的工具方法，这个方法通常都是直接返回答案，例如：  
 ```python
-from langchain import hub
-
-# 下载一个现有的 Prompt 模板
-react_prompt = hub.pull("hwchase17/react")
-
-print(react_prompt.template)
-```
-#### google搜索API
-```shell
-pip install google-search-results
+def finish(the_final_answer: str) -> str:
+    return the_final_answer
 ```
 
-### 智能体类型：SelfAskWithSearch
+3、中间步骤    
+就是说一定要注意工具方法的输入、输出参数，因为大模型在调用过程中，某一个工具的输入参数可能就是来自另一个工具的输出参数。因此为了方便解析，建议所有工具的输出参数都是string类型，方便大模型解析。   
+
+4、短时记忆   
+可以将大模型思考的中间过程记录在短时记忆里，然后再下一步思考时传给大模型，这样更有利于大模型思考
+
+5、长时记忆   
+因为用户的对话往往不是一轮，而是有多轮，这样的话，需要将每一轮对话记录下来，以便下次对话时将记录带给大模型
+
+6、主流程的编写   
+我们设想一下整体流程   
+* 输入： 
+    + 用户问题  
+    + 提供的工具集
+    + 历史对话（初始时可能没有数据）
+    + 其他：比如你提供的数据等等
+* 中间过程：  
+    + LLM根据你的问题执行一步思考，思考的结果必须返回一个工具（或许还有别的内容，如思考过程等）   
+    + 如果返回的工具是 "FINISH"，那么直接调用 "FINISH" 所对应的方法，更新长时记忆，直接返回结果  
+    + 如果不是 "FINISH"，直接调用对应的工具方法，将返回结果、上面的思考过程更新到短时记忆中  
+    + 进行下一轮思考   
+    + 但是注意，思考的轮数必须要有个上限，如果思考轮数大于上限时，直接返回“失败”
+* 输出：
+    + 输出最终结果 
+* 整个思考流程图如下图所示
+
+![agent.png](img/agent.png)
+
+
+### 智能体架构一：ReAct
+以上的思考过程就是基于ReAct架构，ReAct架构原理如下图所示：
+
+![img.png](img/react.png)   
+
+其实说白了就是让大模型不断思考，然后选择工具，帮助用户完成问题的过程。
+
+
+### 智能体架构二：SelfAskWithSearch
 这种模式就是一直向上发问，类似于递归函数，例如问冯小刚老婆演过哪些电影？大模型会一直向上发问：冯小刚老婆是谁？然后搜索她演过的电影。    
 
 ### 手动实现一个Agent
-#### Agent的核心流程
-![agent.png](img/agent.png)
-#### 实现步骤
-1. 定义结构体Action
-2. 实现ReAct逻辑  
-2.1 初始化方法
+整个代码在 [agent](agent) 目录下。  
+1、运行程序      
+* 在本地安装 Milvus 向量数据库并启动，关于如何安装，我已经在 **[向量数据库]()** 一节中做了详细记录
+* 在项目根目录（langchain-demo目录）下建立配置文件 .env 文件
+* 在 .env 文件中配置大模型 api_key，如果你使用 ChatGPT，那么配置 OPENAI_API_KEY=sk-xxx，如果使用硅基流动平台调用DeepSeek V3，则配置SILICONFLOW_API_KEY=sk-xxx
+* 修改 agent.main.main() 方法中的 llm 参数，如果你使用gpt，那么改成 gpt大语言模型，当然你可以修改代码使用你自己的大模型   
+* 运行 [main.py](agent%2Fmain.py)  
+* 用户提问示例在 [examples.txt](agent%2Fexamples.txt) 中
+* 以下是运行截图   
+
+<img src=img/runagent.png width=300 />
+<img src=img/runagent2.png width=300 />
+
+2、重点说明prompt
+
+
 
 
 
