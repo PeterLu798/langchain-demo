@@ -30,6 +30,9 @@ if __name__ == "__main__":
     query = "2023年四月6日天气晴..."
 
     input_prompt = prompt.format_prompt(query=query)
+    print("Prompt输入")
+    print(input_prompt)
+
     output = llm.invoke(input_prompt)
     print("原始输出:\n" + output.content)
 

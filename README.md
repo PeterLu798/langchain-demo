@@ -1548,7 +1548,134 @@ pip install -qU  langchain_milvus
 LCEL全称：LangChain Expression Language
 LangChain Expression Language（LCEL）是一种声明式语言，可轻松组合不同的调用顺序构成 Chain。LCEL 自创立之初就被设计为能够支持将原型投入生产环境，无需代码更改，从最简单的“提示+LLM”链到最复杂的链（已有用户成功在生产环境中运行包含数百个步骤的 LCEL Chain）。
 
-LCEL 的一些亮点包括：
+### 基本示例
+我们先来看看 LCEL 如何使用，后面再讲它的核心原理。     
+
+#### 1、prompt + model + output parser
+
+这是最常见的场景了，输入提示词、调用大模型、最后输出回复。   
+* 安装依赖，这里我使用deepseek大模型
+```shell
+pip install -qU langchain-core 
+pip install -qU langchain-deepseek
+```
+* 代码在 [LCEL-demo1.py](mylangchain%2Flcel%2FLCEL-demo1.py)  
+
+让我们注意这行代码，我们使用LCEL将不同的组件编排到一起。
+```python
+chain = prompt | model | output_parser
+```
+这个 <font color="#dd00dd">|</font> 运算符非常类似unix的管道操作符，一个组件的输出作为另一个组件的输入。我们详细解释下这段代码：  
+* prompt &emsp;是ChatPromptTemplate对象。LangChain 提供了各种各样的Prompt模板，ChatPromptTemplate的特点是分了角色，比如System、Human、Ai等等
+* model &emsp;prompt传递给model。本例中model是一个ChatModel，输出一个BaseMessage。补充一个知识点，在langChain中，大语言模型分为LLM和ChatModel，LLM输入输出都是string，而ChatModel的输入输出都是BaseMessage的子类，分为AIMessage（模型输出）、HumanMessage（用户输入）、SystemMessage（系统输入）。 model的输出是AIMessage类型。
+* output_parser &emsp;最后我们的模型输出结果传递给输出解释器，StrOutputParser会将Message转为String。
+
+#### 2、用户语义识别
+将用户输入的话经过大模型分析之后，转换成结构性输出，这样就能去查数据库或使用程序处理下一步业务了。  
+
+代码示例：[LCEL-demo2.py](mylangchain%2Flcel%2FLCEL-demo2.py)   
+
+示例中我们想识别用户想咨询什么样的套餐，例如，用户输入“不超过100元的套餐哪个流量最大”，大模型最终的输出是这样一个对象：  
+```python
+name=None price_lower=None price_upper=100 mobile_data_lower=None mobile_data_upper=None sort_by=<SortEnum.mobile_data: 'mobile_data'> ordering=<OrderingEnum.descend: 'descend'>
+```
+这样我们就能根据这个对象来写sql了：
+```text
+select * from 套餐表 where price <= 100 order by mobile_data desc
+```
+我们还是重点解析Chain的部分：
+````python
+runnable = (
+            {"text": RunnablePassthrough()} | prompt | model | parser
+)
+````
+我们解释下这句：{"text": RunnablePassthrough()} 这句其实就是 RunnableParallel() 方法的简写，使用RunnableParallel对输入prompt template的数据进行预处理。RunnableParallel可以并行的处理其中的多个组件，最终将结果统一输出。将用户输入原封不动作为text (使用RunnablePassthrough() 保留原始输入)。最终组成一个dict传递给prompt template。     
+
+#### 3、RAG
+代码示例：[LCEL-demo3.py](mylangchain%2Flcel%2FLCEL-demo3.py)     
+
+这里还是强调一下chain的部分，这里就能用到RunnableParallel的并行了，将retriever的结果作为context，用户输入则原封不动作为question（使用 RunnablePassthrough() 保留原始输入）。    
+
+整个流程如下所示：
+
+<img src=img/lcrag.png width=600 />
+
+### LCEL核心原理
+#### 管道运算符
+LCEL的关键就在于管道运算符 <font color="#dd00dd">|</font> 上，那么这个管道运算符背后的原理到底是什么呢？     
+1、<font color="#dd00dd">|</font> 本来的含义是位运算符或，比如 1 | 2 输出为3。    
+2、接下来我们再看看Python的两个魔法函数__or__和__ror__      
+* | 到 | 代表三部分，左边的"|"，中间的"到", 右边的"|"
+* \_\_or__ 定义实例的右侧遇到|时的具体行为
+* \_\_ror__ 定义当实例左侧遇到|时的具体行为
+* 一个例子：
+```python
+class Test:
+
+    def __or__(self, other):
+        print(f"我右边有一个东西，它是：{other}")
+
+    def __ror__(self, other):
+        print(f"我左边有一个东西，它是：{other}")
+
+
+if __name__ == '__main__':
+    test = Test()
+
+    test | 18000
+    15000 | test
+# 运行结果：
+# 我右边有一个东西，它是：18000
+# 我左边有一个东西，它是：15000
+```
+#### Chain中的关键类
+来看看Chain中的关键类，以及它们之间的关系：
+
+<img src=img/class-img.png width=600 />
+
+1、我们平时使用的所有LCEL相关的组件都继承自RunnableSerializable。        
+2、RunnableSerializable 分为两部分Runnable和Serializable。其中Serializable是继承自Pydantic的BaseModel。（py+pedantic=Pydantic，是非常流行的参数验证框架）Serializable提供了，将Runnable序列化的能力。而Runnable，则是LCEL组件最重要的一个抽象类，包含了最核心的能力。      
+3、Runnable 作为一个抽象类，它有几个重要的抽象方法。
+* invoke/ainvoke: 单个输入转为输出。
+* batch/abatch:批量转换。
+* stream/astream: 单个流式处理。
+* astream_log:从输入流流式获取结果与中间步骤。
+
+注意a开头的函数代表具有异步能力。     
+同时 Runnable 也实现了两个重要的magic method ，就是前面说的用于支持管道操作符|的__or__ 与__ror__。     
+```python
+def __or__(  
+    self,  
+    other: Union[  
+        Runnable[Any, Other],  
+        Callable[[Any], Other],  
+        Callable[[Iterator[Any]], Iterator[Other]],  
+        Mapping[str, Union[Runnable[Any, Other], Callable[[Any], Other], Any]],  
+    ],  
+) -> RunnableSerializable[Input, Other]: 
+	# coerce_to_runnable是将other强制转换为Runnable
+    """Compose this runnable with another object to create a RunnableSequence."""  
+    return RunnableSequence(self, coerce_to_runnable(other))  
+  
+def __ror__(  
+    self,  
+    other: Union[  
+        Runnable[Other, Any],  
+        Callable[[Other], Any],  
+        Callable[[Iterator[Other]], Iterator[Any]],  
+        Mapping[str, Union[Runnable[Other, Any], Callable[[Other], Any], Any]],  
+    ],  
+) -> RunnableSerializable[Other, Output]:  
+    """Compose this runnable with another object to create a RunnableSequence."""  
+    return RunnableSequence(coerce_to_runnable(other), self)
+```
+
+
+
+
+
+### 总结
+总结一下LCEL的特点：
 1. 流支持：使用 LCEL 构建 Chain 时，你可以获得最佳的首个令牌时间（即从输出开始到首批输出生成的时间）。对于某些 Chain，这意味着可以直接从 LLM 流式传输令牌到流输出解析器，从而以与 LLM 提供商输出原始令牌相同的速率获得解析后的、增量的输出。
 2. 异步支持：任何使用 LCEL 构建的链条都可以通过同步 API（例如，在 Jupyter 笔记本中进行原型设计时）和异步 API（例如，在 LangServe 服务器中）调用。这使得相同的代码可用于原型设计和生产环境，具有出色的性能，并能够在同一服务器中处理多个并发请求。
 3. 优化的并行执行：当你的 LCEL 链条有可以并行执行的步骤时（例如，从多个检索器中获取文档），我们会自动执行，无论是在同步还是异步接口中，以实现最小的延迟。
@@ -1557,15 +1684,6 @@ LCEL 的一些亮点包括：
 6. 输入和输出模式：输入和输出模式为每个 LCEL 链提供了从链的结构推断出的 Pydantic 和 JSONSchema 模式。这可以用于输入和输出的验证，是 LangServe 的一个组成部分。
 7. 无缝 LangSmith 跟踪集成：随着链条变得越来越复杂，理解每一步发生了什么变得越来越重要。通过 LCEL，所有步骤都自动记录到 LangSmith，以实现最大的可观察性和可调试性。
 8. 无缝 LangServe 部署集成：任何使用 LCEL 创建的链都可以轻松地使用 LangServe 进行部署。
-
-### Pipeline 式调用 PromptTemplate, LLM 和 OutputParser
-[ELEL.py](lcel%2FELEL.py)
-### 流式输出
-[StreamDemo.py](lcel%2FStreamDemo.py)
-### 用 LCEL 实现 RAG
-[Index.py](rag%2FIndex.py)
-### 用 LCEL 实现工厂模式
-[ConfigurableDemo.py](lcel%2FConfigurableDemo.py)
 
 
 ## LangServe

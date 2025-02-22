@@ -6,8 +6,8 @@ from langchain_deepseek import ChatDeepSeek
 
 class SiliconflowFactory:
     model_params = {
-        "temperature": 0,
-        "seed": 42,
+        "temperature": 0,  # 适用于需要确定性回答的场景，如程序代码生成、自动化文档撰写、数据分析等
+        "seed": 42,  # 输出将完全可复现，每次运行都生成相同的结果
     }
 
     @classmethod
