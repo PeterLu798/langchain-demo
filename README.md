@@ -61,40 +61,40 @@
     + [自我反思](#%E8%87%AA%E6%88%91%E5%8F%8D%E6%80%9D)
     + [Query Routing with an Agent](#query-routing-with-an-agent)
 - [LangChain](#langchain)
-  * [模型 API](#%E6%A8%A1%E5%9E%8B-api)
-    + [OpenAI 模型封装](#openai-%E6%A8%A1%E5%9E%8B%E5%B0%81%E8%A3%85)
-    + [Ollama 封装](#ollama-%E5%B0%81%E8%A3%85)
-    + [多轮对话 Session 封装](#%E5%A4%9A%E8%BD%AE%E5%AF%B9%E8%AF%9D-session-%E5%B0%81%E8%A3%85)
+  * [大语言模型封装](#%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%B0%81%E8%A3%85)
+    + [OpenAI](#openai)
+    + [Deepseek](#deepseek)
+    + [Ollama](#ollama)
   * [模型的输入与输出](#%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%BE%93%E5%85%A5%E4%B8%8E%E8%BE%93%E5%87%BA)
     + [Prompt 模板封装](#prompt-%E6%A8%A1%E6%9D%BF%E5%B0%81%E8%A3%85)
-    + [从文件加载 Prompt 模板](#%E4%BB%8E%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD-prompt-%E6%A8%A1%E6%9D%BF)
     + [结构化输出](#%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA)
-  * [Function Calling](#function-calling)
+    + [Function Calling](#function-calling)
   * [数据连接封装](#%E6%95%B0%E6%8D%AE%E8%BF%9E%E6%8E%A5%E5%B0%81%E8%A3%85)
     + [文档加载器：Document Loaders](#%E6%96%87%E6%A1%A3%E5%8A%A0%E8%BD%BD%E5%99%A8document-loaders)
-    + [文档处理器](#%E6%96%87%E6%A1%A3%E5%A4%84%E7%90%86%E5%99%A8)
-      - [TextSplitter](#textsplitter)
-    + [向量数据库与向量检索](#%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2)
-      - [向量模型](#%E5%90%91%E9%87%8F%E6%A8%A1%E5%9E%8B-1)
+    + [Text splitters](#text-splitters)
+    + [Embedding models](#embedding-models)
+    + [Vector stores](#vector-stores)
+    + [Retrievers](#retrievers)
   * [对话历史管理](#%E5%AF%B9%E8%AF%9D%E5%8E%86%E5%8F%B2%E7%AE%A1%E7%90%86)
     + [历史记录的剪裁](#%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95%E7%9A%84%E5%89%AA%E8%A3%81)
     + [过滤带标识的历史记录](#%E8%BF%87%E6%BB%A4%E5%B8%A6%E6%A0%87%E8%AF%86%E7%9A%84%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95)
-  * [LCEL](#lcel)
-    + [Pipeline 式调用 PromptTemplate, LLM 和 OutputParser](#pipeline-%E5%BC%8F%E8%B0%83%E7%94%A8-prompttemplate-llm-%E5%92%8C-outputparser)
-    + [流式输出](#%E6%B5%81%E5%BC%8F%E8%BE%93%E5%87%BA)
-    + [用 LCEL 实现 RAG](#%E7%94%A8-lcel-%E5%AE%9E%E7%8E%B0-rag)
-    + [用 LCEL 实现工厂模式（选）](#%E7%94%A8-lcel-%E5%AE%9E%E7%8E%B0%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E9%80%89)
     + [存储与管理对话历史](#%E5%AD%98%E5%82%A8%E4%B8%8E%E7%AE%A1%E7%90%86%E5%AF%B9%E8%AF%9D%E5%8E%86%E5%8F%B2)
+  * [LCEL](#lcel)
+    + [基本示例](#%E5%9F%BA%E6%9C%AC%E7%A4%BA%E4%BE%8B)
+      - [1、prompt + model + output parser](#1prompt--model--output-parser)
+      - [2、用户语义识别](#2%E7%94%A8%E6%88%B7%E8%AF%AD%E4%B9%89%E8%AF%86%E5%88%AB)
+      - [3、RAG](#3rag)
+    + [LCEL核心原理](#lcel%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86)
+      - [管道运算符](#%E7%AE%A1%E9%81%93%E8%BF%90%E7%AE%97%E7%AC%A6)
+      - [Chain中的关键类](#chain%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE%E7%B1%BB)
+    + [总结](#%E6%80%BB%E7%BB%93)
   * [LangServe](#langserve)
   * [智能体架构：Agent](#%E6%99%BA%E8%83%BD%E4%BD%93%E6%9E%B6%E6%9E%84agent)
     + [什么是智能体（Agent）](#%E4%BB%80%E4%B9%88%E6%98%AF%E6%99%BA%E8%83%BD%E4%BD%93agent)
-    + [智能体类型：ReAct](#%E6%99%BA%E8%83%BD%E4%BD%93%E7%B1%BB%E5%9E%8Breact)
-      - [LangChain Hub](#langchain-hub)
-      - [google搜索API](#google%E6%90%9C%E7%B4%A2api)
-    + [智能体类型：SelfAskWithSearch](#%E6%99%BA%E8%83%BD%E4%BD%93%E7%B1%BB%E5%9E%8Bselfaskwithsearch)
+    + [关键概念](#%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5)
+    + [智能体架构一：ReAct](#%E6%99%BA%E8%83%BD%E4%BD%93%E6%9E%B6%E6%9E%84%E4%B8%80react)
+    + [智能体架构二：SelfAskWithSearch](#%E6%99%BA%E8%83%BD%E4%BD%93%E6%9E%B6%E6%9E%84%E4%BA%8Cselfaskwithsearch)
     + [手动实现一个Agent](#%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AAagent)
-      - [Agent的核心流程](#agent%E7%9A%84%E6%A0%B8%E5%BF%83%E6%B5%81%E7%A8%8B)
-      - [实现步骤](#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4)
 
 
 # 向量
@@ -1004,7 +1004,7 @@ search_params = {
 5、执行混合搜索  
 
 ##### 查询
-查询是针对元数据进行过滤，本节是对 **过滤搜索** 一节的补充。    
+查询是针对元数据进行过滤，本节是对 **[过滤搜索](#%E8%BF%87%E6%BB%A4%E6%90%9C%E7%B4%A2)** 一节的补充。    
 1、直接使用主键进行get查询
 ````python
 from pymilvus import MilvusClient
@@ -1070,7 +1070,7 @@ while True:
 ````
 
 ##### 过滤
-本节也是对 **过滤搜索** 一节的补充。   
+本节也是对 **[过滤搜索](#%E8%BF%87%E6%BB%A4%E6%90%9C%E7%B4%A2)** 一节的补充。   
 1、Milvus支持的比较操作符
 * == 等于
 * != 不等于
@@ -1271,7 +1271,7 @@ AI: What is the dataset size limit that Milvus can handle?
 在涉及大量数据或数据分层的情况下，例如图书馆 Collections 中的内容检索，这种方法证明是有益的。
 
 ### 混合检索和重新排名
-这在上面 **混合搜索** 一节中做了详细说明。
+这在上面 **[混合搜索](#%E6%B7%B7%E5%90%88%E6%90%9C%E7%B4%A2)** 一节中做了详细说明。
 
 ## 改进检索器
 ### 句子窗口检索
@@ -1287,7 +1287,7 @@ AI: What is the dataset size limit that Milvus can handle?
 下面利用llama-index来实现这一机制。
 
 ### 元数据过滤
-在上面 **过滤搜索** 一节中已经做了详细说明。
+在上面 **[过滤搜索](#%E8%BF%87%E6%BB%A4%E6%90%9C%E7%B4%A2)** 一节中已经做了详细说明。
 
 ## Generator 增强
 ### 压缩 LLM prompt 
@@ -1504,7 +1504,7 @@ pip install -qU langchain-text-splitters
 ```
 
 ### Embedding models
-关于向量模型我们在 **[向量模型]()** 一节中已经做了详细说明，这里简单介绍下Langchain 是如何集成这些向量模型的。    
+关于向量模型我们在 **[向量模型](#%E5%90%91%E9%87%8F%E6%A8%A1%E5%9E%8B)** 一节中已经做了详细说明，这里简单介绍下Langchain 是如何集成这些向量模型的。    
 以 bge-m3 为例，在LangChain中我们可以使用HuggingFace库来调用它：  
 1、添加依赖
 ```shell
@@ -1519,7 +1519,7 @@ embeddings_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-m
 3、这里提供一个获取向量模型的工厂类：[LCEmbeddings.py](mylangchain%2Fdata-connection%2Fembedding%2FLCEmbeddings.py)
 
 ### Vector stores
-我们在 **[向量数据库]()** 一节中已经详细讲解了目前最主流的向量数据库Milvus。接下来看看在LangChain中如何使用它。   
+我们在 **[向量数据库](#%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93)** 一节中已经详细讲解了目前最主流的向量数据库Milvus。接下来看看在LangChain中如何使用它。   
 
 ```shell
 pip install -qU  langchain_milvus
@@ -1629,49 +1629,131 @@ if __name__ == '__main__':
 # 我左边有一个东西，它是：15000
 ```
 #### Chain中的关键类
-来看看Chain中的关键类，以及它们之间的关系：
+来看看Chain中的关键类，以及它们之间的关系。   
+1、通过上面的三个例子，我们总结Chain中的关键类大致有以下几个：
+* RunnableParallel：对输入prompt template的数据进行预处理
+* BasePromptTemplate：Prompt模板类
+* BaseChatModel：大模型
+* RunnableSequence：以上各种组件编排之后，就会生成一个RunnableSequence对象
+
+2、这些类之间的关系
 
 <img src=img/class-img.png width=600 />
 
-1、我们平时使用的所有LCEL相关的组件都继承自RunnableSerializable。        
-2、RunnableSerializable 分为两部分Runnable和Serializable。其中Serializable是继承自Pydantic的BaseModel。（py+pedantic=Pydantic，是非常流行的参数验证框架）Serializable提供了，将Runnable序列化的能力。而Runnable，则是LCEL组件最重要的一个抽象类，包含了最核心的能力。      
-3、Runnable 作为一个抽象类，它有几个重要的抽象方法。
-* invoke/ainvoke: 单个输入转为输出。
-* batch/abatch:批量转换。
-* stream/astream: 单个流式处理。
-* astream_log:从输入流流式获取结果与中间步骤。
+通过类图我们发现几个点：
+* 我们平时使用的所有LCEL相关的组件都继承自RunnableSerializable。        
+* RunnableSerializable 继承两个类 Serializable 和 Runnable。
+    + Serializable 是继承自Pydantic的BaseModel，提供了将Runnable序列化的能力。
+    + Runnable 是LCEL组件最重要的一个抽象类，包含了最核心的能力：     
+        - invoke/ainvoke: 单个输入转为输出。
+        - batch/abatch:批量转换。
+        - stream/astream: 单个流式处理。
+        - astream_log:从输入流流式获取结果与中间步骤。
+        - 注意a开头的函数代表具有异步能力。     
 
-注意a开头的函数代表具有异步能力。     
-同时 Runnable 也实现了两个重要的magic method ，就是前面说的用于支持管道操作符|的__or__ 与__ror__。     
+3、代码详解   
+
+* Runnable 两个重要魔法函数__or__ 与__ror__     
 ```python
-def __or__(  
-    self,  
-    other: Union[  
-        Runnable[Any, Other],  
-        Callable[[Any], Other],  
-        Callable[[Iterator[Any]], Iterator[Other]],  
-        Mapping[str, Union[Runnable[Any, Other], Callable[[Any], Other], Any]],  
-    ],  
-) -> RunnableSerializable[Input, Other]: 
-	# coerce_to_runnable是将other强制转换为Runnable
-    """Compose this runnable with another object to create a RunnableSequence."""  
-    return RunnableSequence(self, coerce_to_runnable(other))  
-  
-def __ror__(  
-    self,  
-    other: Union[  
-        Runnable[Other, Any],  
-        Callable[[Other], Any],  
-        Callable[[Iterator[Other]], Iterator[Any]],  
-        Mapping[str, Union[Runnable[Other, Any], Callable[[Other], Any], Any]],  
-    ],  
-) -> RunnableSerializable[Other, Output]:  
-    """Compose this runnable with another object to create a RunnableSequence."""  
+def __or__(
+    self,
+    other: Union[
+        Runnable[Any, Other],
+        Callable[[Any], Other],
+        Callable[[Iterator[Any]], Iterator[Other]],
+        Mapping[str, Union[Runnable[Any, Other], Callable[[Any], Other], Any]],
+    ],
+) -> RunnableSerializable[Input, Other]:
+    """Compose this Runnable with another object to create a RunnableSequence."""
+    return RunnableSequence(self, coerce_to_runnable(other))
+
+def __ror__(
+    self,
+    other: Union[
+        Runnable[Other, Any],
+        Callable[[Other], Any],
+        Callable[[Iterator[Other]], Iterator[Any]],
+        Mapping[str, Union[Runnable[Other, Any], Callable[[Other], Any], Any]],
+    ],
+) -> RunnableSerializable[Other, Output]:
+    """Compose this Runnable with another object to create a RunnableSequence."""
     return RunnableSequence(coerce_to_runnable(other), self)
+
 ```
+* 可以发现Runnable对象之间编排以后，会生成一个RunnableSequence对象
+* RunnableSequence 类详解
+    + RunnableSequence 顾名思义就按顺序执行的Runnable
+    + 如果我们运行最终编排好的Chain，例如chain.invoke({"topic": "杰瑞"})，实际上就是执行了RunnableSequence的invoke。那我们先来看看invoke函数。
+````python
+def invoke(
+    self, input: Input, config: Optional[RunnableConfig] = None, **kwargs: Any
+) -> Output:
+    from langchain_core.beta.runnables.context import config_with_context
 
+    # 根据上下文补充config
+    config = config_with_context(ensure_config(config), self.steps)
+    # 创建回调管理器，用于支持运行中产生的各种回调
+    callback_manager = get_callback_manager_for_config(config)
+    # 创建运行管理器，用于处理异常重试，结束等情况
+    run_manager = callback_manager.on_chain_start(
+        None,
+        input,
+        name=config.get("run_name") or self.get_name(),
+        run_id=config.pop("run_id", None),
+    )
 
+    # # ！！关键内容！！
+    # 按顺序调用所有步骤
+    try:
+        for i, step in enumerate(self.steps):
+            # mark each step as a child run
+            config = patch_config(
+                config, callbacks=run_manager.get_child(f"seq:step:{i + 1}")
+            )
+            # 复制当前上下文，确保每个步骤都有自己的独立上下文
+            context = copy_context()
+            # 运行
+            context.run(_set_config_context, config)
+            if i == 0:
+                input = context.run(step.invoke, input, config, **kwargs)
+            else:
+                input = context.run(step.invoke, input, config)
+    # finish the root run
+    except BaseException as e:
+        run_manager.on_chain_error(e)
+        raise
+    else:
+        run_manager.on_chain_end(input)
+        return cast(Output, input)
 
+````
+* RunnableParallel 类详解
+    + RunnableParallel 为LCEL提供了并行执行能力
+    + 需要注意的一点是RunnableParallel的step与RunnableSequence不同，是一个dict。用[LCEL-demo3.py](mylangchain%2Flcel%2FLCEL-demo3.py)中的Chain举例说明，这里context和question会变成两个step
+    + 详解 RunnableParallel 的invoke方法（只贴关键代码）
+````python
+# gather results from all steps
+try:
+    # 创建step的副本，以避免在 invoke() 方法执行期间，调用者不小心修改了原始step，从而引发不可预见的错误或行为
+    steps = dict(self.steps__)
+
+    # 根据config中的并发数设置，创建一个 ThreadPoolExecutor 
+    with get_executor_for_config(config) as executor:
+        # 按顺序提交func，收集futures
+        futures = [
+            executor.submit(_invoke_step, step, input, config, key)
+            for key, step in steps.items()
+        ]
+        # 等待所有结果完成，拼装成dict输出
+        output = {key: future.result() for key, future in zip(steps, futures)}
+# finish the root run
+except BaseException as e:
+    run_manager.on_chain_error(e)
+    raise
+else:
+    run_manager.on_chain_end(output)
+    return output
+````
 
 
 ### 总结
@@ -1764,7 +1846,7 @@ def finish(the_final_answer: str) -> str:
 ### 手动实现一个Agent
 整个代码在 [agent](agent) 目录下。  
 1、运行程序      
-* 在本地安装 Milvus 向量数据库并启动，关于如何安装，我已经在 **[向量数据库]()** 一节中做了详细记录
+* 在本地安装 Milvus 向量数据库并启动，关于如何安装，我已经在 **[向量数据库](#%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93)** 一节中做了详细记录
 * 在项目根目录（langchain-demo目录）下建立配置文件 .env 文件
 * 在 .env 文件中配置大模型 api_key，如果你使用 ChatGPT，那么配置 OPENAI_API_KEY=sk-xxx，如果使用硅基流动平台调用DeepSeek V3，则配置SILICONFLOW_API_KEY=sk-xxx
 * 修改 agent.main.main() 方法中的 llm 参数，如果你使用gpt，那么改成 gpt大语言模型，当然你可以修改代码使用你自己的大模型   
@@ -1797,7 +1879,7 @@ def finish(the_final_answer: str) -> str:
         - 告诉大模型最终输出结构
 * 思考过程中的一些关键点
     + 关键概念拆解：一定要对用户提问中的关键概念进行拆解，这样才能让大模型准确理解用户的意图
-    + 反思：这也是增强RAG中的一项关键步骤，具体参考 **[自我反思]()** 一节
+    + 反思：这也是增强RAG中的一项关键步骤，具体参考 **[自我反思](#%E8%87%AA%E6%88%91%E5%8F%8D%E6%80%9D)** 一节
     + 思考：要求大模型进行一步步思考
     + 推理
     + 计划：只计划一步的动作，PLAN ONE STEP ONLY 非常重要

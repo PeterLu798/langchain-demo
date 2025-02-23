@@ -1,11 +1,15 @@
+from dotenv import load_dotenv
 from langchain.schema.output_parser import StrOutputParser
 from langchain.schema.runnable import RunnablePassthrough
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_community.vectorstores import Milvus
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_ollama import OllamaLLM
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+from mylangchain.llms.siliconflow.Siliconflow import SiliconflowFactory
+
+load_dotenv()
 
 # 加载文档
 loader = PyMuPDFLoader("llama2.pdf")
@@ -46,13 +50,13 @@ Question: {question}
 """
 prompt = ChatPromptTemplate.from_template(template)
 
-llm = OllamaLLM(model="deepseek-r1:14b")
+model = SiliconflowFactory.get_default_model()
 
 # Chain
 rag_chain = (
         {"question": RunnablePassthrough(), "context": retriever}
         | prompt
-        | llm
+        | model
         | StrOutputParser()
 )
 
